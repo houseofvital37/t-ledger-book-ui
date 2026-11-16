@@ -1,0 +1,17 @@
+<div id="columns">
+    <button [matMenuTriggerFor]="actionMenu" class="flex items-center border hover:bg-[var(--primary-color)] hover:text-[white] rounded-[6px] py-2 px-3 h-[36px]  gap-2">
+        <span nz-icon nzType="table" nzTheme="outline"></span>
+        Column
+    </button>
+</div>
+
+<mat-menu class="filter-menu p-2 min-w-[300px] max-w-[400px] w-full mt-1" #actionMenu="matMenu" >
+    <div class="min-w-[200px] flex flex-column gap-2.5" (click) = "$event.stopPropagation()">
+        <div class="text-[--primary-color] font-semibold capitalize" (click) = "$event.stopPropagation()">Columns</div>
+        <ng-container  *ngFor="let col of columns">
+            <div *ngIf="col.label != '#' && col.variable != 'action' && col.label">
+                <label nz-checkbox [(nzChecked)]="col.isVisible" class="flex-1 capitalize">{{col.label}}</label>
+            </div>            
+        </ng-container>
+    </div>
+</mat-menu>

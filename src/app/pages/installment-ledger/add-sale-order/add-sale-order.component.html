@@ -1,0 +1,163 @@
+<div
+  id="site-registration"
+  class="flex flex-column items-center bg-[--lightblue-bg-color]"
+>
+  <div class="flex flex-column gap-2.5 max-w-[830PX] w-full">
+    <div
+      class="card flex flex-row py-2 justify-between items-center sticky overflow-y-auto top-0 z-50 bg-transparent border-none"
+    >
+      <div class="flex items-center gap-2 text-lg font-semibold">
+        <button
+          (click)="back()"
+          class="p-2 border rounded flex bg-[#fff] hover:bg-[--primary-color] hover:text-white"
+        >
+          <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+        </button>
+        {{ customerId ? "Edit" : "Add" }} Sale Order
+      </div>
+      <button
+        *ngIf="!customerId"
+         [nzLoading]="isLoading"
+         (click)="addSaleOrder()"
+        nz-button
+        class="flex items-center bg-[--primary-color] text-white rounded h-[36px] py-2.5 px-3 gap-2.5"
+      >
+        <i nz-icon nzType="plus-circle"></i>
+        Add Sale Order
+      </button>
+      <button
+        *ngIf="customerId"
+        nz-button
+        [nzLoading]="isLoading"
+        (click)="updateSaleOrder()"
+        class="flex items-center bg-[--primary-color] text-white rounded h-[36px] py-2.5 px-2.5"
+      >
+        <i nz-icon nzType="plus-circle"></i>
+        Submit
+      </button>
+    </div>
+    <div class="flex flex-column gap-4 max-w-[830px] overflow-y-auto h-[80vh]">
+      <!-- Basic Detail -->
+      <div class="card p-4 flex flex-column gap-3"  [formGroup]="basicDetail">
+        <div class="font-semibold text-md">Order Detail</div>
+        <div class="flex flex-wrap gap-3">
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Product</div>
+            <nz-input-group class="border rounded p-0">
+              <nz-select
+                nzPlaceHolder="Select Product"
+                [nzDropdownClassName]="'option-width-100'"
+                [nzShowSearch]="true"
+                [nzAllowClear]="true"
+                [nzDropdownClassName]="'option-width-100'" 
+                class="max-h-[36px] w-100"
+                formControlName="productId"
+                (ngModelChange)="productChange()"
+              >
+                <nz-option
+                  *ngFor="let product of products"
+                  [nzValue]="product.productId"
+                  [nzLabel]="product.productName"
+                ></nz-option>
+              </nz-select>
+              </nz-input-group>
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Installment Rule</div>
+            <nz-input-group class="border rounded p-0">
+              <nz-select
+                (ngModelChange)="installmentRuleChange()"
+                nzPlaceHolder="Select Installment Plan"
+                [nzDropdownClassName]="'option-width-100'"
+                [nzShowSearch]="true"
+                [nzAllowClear]="true"
+                [nzDropdownClassName]="'option-width-100'" 
+                class="max-h-[36px] w-100"
+                formControlName="categoryInstallmentRuleId"
+              >
+                <nz-option
+                  *ngFor="let rule of installmentRules"
+                  [nzValue]="rule.categoryInstallmentRuleId"
+                  [nzLabel]="rule.ruleName"
+                ></nz-option>
+              </nz-select>
+              </nz-input-group>
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Customer</div>
+            <nz-input-group class="border rounded p-0">
+              <nz-select
+                nzPlaceHolder="Select Customer"
+                [nzDropdownClassName]="'option-width-100'"
+                [nzShowSearch]="true"
+                [nzAllowClear]="true"
+                [nzDropdownClassName]="'option-width-100'" 
+                class="max-h-[36px] w-100"
+                formControlName="customerId"
+              >
+                <nz-option
+                  *ngFor="let customer of customers"
+                  [nzValue]="customer.customerId"
+                  [nzLabel]="customer.customerName"
+                ></nz-option>
+              </nz-select>
+              </nz-input-group>
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Product Price</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input required type="number" max="999999" min="0" formControlName="productPrice" class="input-field max-h-[36px]" placeholder="Enter Product Price">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Percentage %</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input readonly type="number" max="999999" min="0" formControlName="percentage" class="input-field max-h-[36px]" placeholder="Enter Percentage">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Final Price</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input readonly type="number" max="999999" min="0" formControlName="finalPrice" class="input-field max-h-[36px]" placeholder="Enter Final Price">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Advance</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input required type="number" max="999999" min="0" formControlName="advance" class="input-field max-h-[36px]" placeholder="Enter Advance Amount">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Remaining Amount</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input readonly type="number" max="999999" min="0" formControlName="remainingAmount" class="input-field max-h-[36px]" placeholder="Enter Remaining Amount">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Total Installments</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input readonly maxlength="100" formControlName="totalInstallments" class="input-field max-h-[36px]" placeholder="Enter Total Installments">
+
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Monthly Installment</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input readonly type="number" max="999999" min="0" formControlName="monthlyInstallment" class="input-field max-h-[36px]" placeholder="Enter Monthly Installment">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Price Mode</div>
+            <label 
+            nz-checkbox 
+            formControlName="customePrice"
+            >Custom Price</label>               
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="false" class="w-full h-[100vh] top-0 left-0 text-center absolute z-[51] flex bg-[#f1f1f16b]">
+      <span nz-icon nzType="loading" class="m-auto text-[--blue-color] text-3xl"></span>
+  </div>
+  </div>
+</div>

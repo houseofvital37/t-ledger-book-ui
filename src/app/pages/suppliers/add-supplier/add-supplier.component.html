@@ -1,0 +1,119 @@
+<div
+  id="site-registration"
+  class="flex flex-column items-center bg-[--lightblue-bg-color]"
+>
+  <div class="flex flex-column gap-2.5 max-w-[830PX] w-full">
+    <div
+      class="card flex flex-row py-2 justify-between items-center sticky overflow-y-auto top-0 z-50 bg-transparent border-none"
+    >
+      <div class="flex items-center gap-2 text-lg font-semibold">
+        <button
+          (click)="back()"
+          class="p-2 border rounded flex bg-[#fff] hover:bg-[--primary-color] hover:text-white"
+        >
+          <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+        </button>
+        {{ supplierId ? "Edit" : "Add" }} Supplier
+      </div>
+      <button
+        *ngIf="!supplierId"
+         [nzLoading]="isLoading"
+         (click)="addSupplier()"
+        nz-button
+        class="flex items-center bg-[--primary-color] text-white rounded h-[36px] py-2.5 px-3 gap-2.5"
+      >
+        <i nz-icon nzType="plus-circle"></i>
+        Add Supplier
+      </button>
+      <button
+        *ngIf="supplierId"
+        nz-button
+        [nzLoading]="isLoading"
+        (click)="updateSupplier()"
+        class="flex items-center bg-[--primary-color] text-white rounded h-[36px] py-2.5 px-2.5"
+      >
+        <i nz-icon nzType="plus-circle"></i>
+        Submit
+      </button>
+    </div>
+    <div class="flex flex-column gap-4 max-w-[830px] overflow-y-auto h-[80vh]">
+      <!-- Basic Detail -->
+      <div class="card p-4 flex flex-column gap-3"  [formGroup]="basicDetail">
+        <div class="font-semibold text-md">Supplier Detail</div>
+        <div class="flex flex-wrap gap-4">
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Supplier Name</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input required maxlength="100" [disabled]="true" formControlName="supplierName" class="input-field max-h-[36px]" placeholder="Enter Supplier Name">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Supplier Phone</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input required maxlength="100" [disabled]="true" formControlName="supplierPhone" class="input-field max-h-[36px]" placeholder="Enter Supplier Phone Number">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Supplier Category</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input required maxlength="100" [disabled]="true" formControlName="supplierCategory" class="input-field max-h-[36px]" placeholder="Enter Supplier Category">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">City</div>
+            <nz-input-group class="border rounded p-0">
+              <nz-select
+                nzPlaceHolder="Select City"
+                [nzDropdownClassName]="'option-width-100'"
+                [nzShowSearch]="true"
+                [nzAllowClear]="true"
+                [nzDropdownClassName]="'option-width-100'" 
+                class="max-h-[36px] w-100"
+                formControlName="cityId"
+              >
+                <nz-option
+                  *ngFor="let city of cityList"
+                  [nzValue]="city.cityId"
+                  [nzLabel]="city.cityName"
+                ></nz-option>
+              </nz-select>
+              </nz-input-group>
+          </div>
+          <div class="inputWrap w-100 ">
+            <div class="text-muted text-xs p-1">Supplier Address</div>
+            <nz-input-group class="border rounded p-0 px-2 overflow-hidden">
+                <textarea type="text" required [rows]="3" [maxlength]="500" formControlName="address" class="py-2 input-field w-100 max-h-[70px]" placeholder="Enter Supplier Address"></textarea>
+            </nz-input-group>                
+          </div>
+          <!-- <div class="inputWrap w-6/12 max-w-[48%]"
+              >
+                <div class="text-muted text-xs p-1">City</div>
+                <nz-input-group class="border rounded p-0 ">
+                  <nz-select
+                    nzPlaceHolder="Select Location"
+                    [nzShowSearch]="true"
+                    [nzAllowClear]="true"
+                    [nzDropdownClassName]="'option-width-100'"
+    
+                    [nzDisabled]="stationeryOrderMasterId ? true : false || isLocationDisabled()" 
+                    [nzDropdownClassName]="'option-width-100'"
+                    [nzLoading]="isLocationsLoading"
+                    class="max-h-[36px] w-100"
+                    formControlName="vendorLocationId"
+                  >
+                    <nz-option
+                      *ngFor="let location of locations"
+                      [nzValue]="location.vendorLocationId"
+                      [nzLabel]="location.locationTitle"
+                    ></nz-option>
+                  </nz-select>
+                </nz-input-group>
+              </div> -->
+        </div>
+      </div>
+    </div>
+    <div *ngIf="false" class="w-full h-[100vh] top-0 left-0 text-center absolute z-[51] flex bg-[#f1f1f16b]">
+      <span nz-icon nzType="loading" class="m-auto text-[--blue-color] text-3xl"></span>
+  </div>
+  </div>
+</div>

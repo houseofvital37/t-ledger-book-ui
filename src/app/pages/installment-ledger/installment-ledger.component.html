@@ -1,0 +1,210 @@
+<div class="flex flex-col gap-2.5">
+  <div class="flex flex-column gap-2.5 mx-4 mb-2">
+    <div class="flex gap-2.5 text-muted">
+      <i class="text-xs" nz-icon nzType="home" nzTheme="fill"></i>
+      <nz-breadcrumb nzSeparator="/" class="mb-0">
+        <nz-breadcrumb-item [routerLink]="['/dashboard']">Home</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Installment Ledger</nz-breadcrumb-item>
+      </nz-breadcrumb>
+    </div>
+    <div class="flex justify-between items-center">
+      <div class="pageTitle text-[--black-color] font-semibold text-2xl">
+        Installment Ledger
+      </div>
+      <div class="btnWrap flex gap-2.5">
+        <!-- <button
+          class="flex justify-center items-center border bg-[--primary-color] text-white rounded-[6px] py-2 px-2 h-[36px] gap-2.5 min-w-[180px]"
+          [routerLink]="['/sale-orders/add-sale-order']"
+        >
+          <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
+          Add Install
+        </button> -->
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex flex-col justify-between innerPage bg-white pb-2 rounded border"
+  >
+    <div class="topContent">
+      <div class="statusTabsWrap flex justify-end border-b px-4 py-2">
+        <div class="flex gap-2.5">
+          <!-- generic Search -->
+          <!-- <div class="searchInput max-w-[385px] w-full">
+            <nz-input-group
+              [nzSuffix]="suffixIconSearch"
+              class="rounded-md border"
+            >
+              <div class="w-full">
+                <input
+                  [(ngModel)]="searchText"
+                  name="search"
+                  type="text"
+                  nz-input
+                  nzBorderless
+                  placeholder="Search Keyword"
+                  class="fg-black text-sm font-normal"
+                />
+              </div>
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+              <span nz-icon nzType="search"></span>
+            </ng-template>
+          </div> -->
+
+          <div class="filterBtn">
+            <app-filter [filters]="filters" [showFilters]="showFilter" (onSubmitEvent)="applyFilter($event)"></app-filter>
+          </div>
+          <app-columns [columns]="columns"></app-columns>
+        </div>
+      </div>
+      <div *ngIf="chips?.length" class="rounded-md d-flex flex-wrap chipWrap">
+          <ng-container  *ngFor="let chip of chips">
+              <nz-tag class="m-1 rounded-md px-2 py-1 flex items-center">
+                  <b>{{chip.label}}</b>: &nbsp;
+                  <span [innerHtml]="chip.value"></span>
+                  <span (click)="onChipCancel(chip)" class="cursor-pointer text-[--warn-color]" nz-icon nzType="delete" nzTheme="outline"></span>
+              </nz-tag>
+          </ng-container>
+      </div>
+      <form #form="ngForm" class="h-full">
+        <div class="tableWrap mx-0">
+          <nz-table
+            class="overflow-auto"
+            [nzLoading]="isLoading"
+            [nzLoadingIndicator]="loaderTemplate"
+            [nzFrontPagination]="false"
+            #rowSelectionTable
+            nzShowPagination="false"
+            [nzData]="orders"
+            nzTableLayout="fixed"
+          >
+            <thead>
+              <tr>
+                <ng-container *ngFor="let col of columns">
+                  <ng-container [ngSwitch]="col.variable">
+                    <ng-container *ngSwitchCase="'check'">
+                      <th
+                        [nzChecked]="
+                          selectedOrdersIds.length == orders.length &&
+                          orders.length > 0
+                        "
+                        (nzCheckedChange)="onAllChecked($event)"
+                        [nzWidth]="col.width"
+                      ></th>
+                    </ng-container>
+                    <!-- <ng-container *ngSwitchCase="'invoiceAmount'">
+                                        <th [nzWidth]="col.width" class="text-center" *ngIf="col.isVisible" [class]="col.class">{{col.label}}</th>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'totalItems'">
+                                        <th [nzWidth]="col.width" class="text-center" *ngIf="col.isVisible" [class]="col.class">{{col.label}}</th>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'saleChannel'">
+                                        <th [nzWidth]="col.width" class="text-center" *ngIf="col.isVisible" [class]="col.class">{{col.label}}</th>
+                                    </ng-container> -->
+
+                    <ng-container *ngSwitchCase="'action'">
+                      <th
+                        [nzWidth]="col.width"
+                        class="text-center"
+                        *ngIf="col.isVisible"
+                        [class]="col.class"
+                      >
+                        {{ col.label }}
+                      </th>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Sr'">
+                      <th
+                        [nzWidth]="col.width"
+                        class="text-center"
+                        *ngIf="col.isVisible"
+                        [class]="col.class"
+                      >
+                        {{ col.label }}
+                      </th>
+                    </ng-container>
+
+                    <ng-container *ngSwitchDefault>
+                      <th
+                        *ngIf="col.isVisible"
+                        [class]="col.class"
+                        [nzWidth]="col.width"
+                      >
+                        {{ col.label }}
+                      </th>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of orders; let i = index">
+                <ng-container *ngFor="let col of columns">
+                  <ng-container [ngSwitch]="col.variable">
+                    <ng-container *ngSwitchCase="'check'">
+                      <td
+                        nzEllipsis
+                        *ngIf="col.isVisible"
+                        class="text-center"
+                        [nzChecked]="
+                          selectedOrdersIds.includes(data.orderDetailId)
+                        "
+                      ></td>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Sr'">
+                      <td nzEllipsis *ngIf="col.isVisible" class="text-[12px]" [class]="col.class">
+                        {{ (pagination.page-1) * pagination.size + i + 1 }}
+                      </td>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'action'">
+                      <td nzEllipsis *ngIf="col.isVisible" class="text-center">
+                        <i
+                          nz-dropdown
+                          [nzDropdownMenu]="menu"
+                          nzTrigger="click"
+                          class="text-lg text-[--gray-color] hover:text-lg cursor-pointer hover:text-[--primary-color] px-[5px]"
+                          nz-icon
+                          nzTheme="fill"
+                          nzType="edit"
+                        ></i>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                          <ul nz-menu class="dropDownMenuList">
+                            <li *ngIf="!actions || actions['Edit']" class="heading-14 weight-400" nz-menu-item [routerLink]="['/sale-orders/edit-order', data.orderMasterId]">
+                              <i nz-icon nzType="edit" nzTheme="fill"></i> 
+                              Edit
+                            </li>
+                          </ul>
+                        </nz-dropdown-menu>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      <td *ngIf="col.isVisible" nzEllipsis>
+                        <div
+                          *ngIf="col.variable != 'paymentCategoryId'"
+                          class="text-[12px]"
+                          [ngClass]="getBadgeClass(data[col.variable])"
+                        >
+                          {{ data[col.variable] || "-" }}
+                        </div>
+                      </td>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </form>
+    </div>
+    <div class="tableFooter">
+        <div class="flex justify-between items-center">
+            <div class="recordWrap pl-3 text-sm font-semibold">
+                Total Records: {{pagination.totalElements || 0}} 
+            </div>
+            <nz-pagination  [nzPageIndex]="pagination.page + 1"  [nzTotal]="pagination.totalElements" nzShowSizeChanger [(nzPageSize)]="pagination.size" [nzPageSizeOptions]="[25, 50, 75, 100]" (nzPageIndexChange)="paginationIndexChange($event)" (nzPageSizeChange)="paginationSizeChange($event)"></nz-pagination>
+        </div>
+    </div>
+  </div>
+</div>
+<ng-template #loaderTemplate
+  ><span nz-icon nzType="loading" class="text-3xl m-5 pt-5"></span
+></ng-template>

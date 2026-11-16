@@ -1,0 +1,43 @@
+::ng-deep .filter-menu{
+    #filter-content{
+        max-height: 380px !important;
+        overflow-y: auto;
+        .ant-form-item-control{
+            max-width: 220px !important;
+            height: 36px;
+        }
+    }
+    margin-top: 10px;
+    width: 380px !important;
+    .ant-form-item-label{
+        width: 100px;
+        text-align: left !important;
+    }.ant-picker-input > input{
+        padding: 0 !important;
+    }
+    // input:not(.ng-touched.ng-valid),
+    // textarea:not(.ng-touched.ng-valid),
+    // .ant-select:not(.ng-touched.ng-valid),
+    // .ant-picker-range:not(.ng-touched.ng-valid),
+    // nz-range-picker:not(.ng-touched.ng-valid){
+    //     border: none !important;
+    // }
+    // input.ng-touched.ng-valid{
+    //     border: none !important;
+    // }
+    .ant-picker-range-separator{
+        padding: 0 !important;
+    }
+    .ant-select-status-error
+    .ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) 
+    .ant-select-selector{
+        border: none;
+    }
+
+    .anticon.anticon-close-circle{
+        display: none !important;
+    }
+    // .active:not(.ng-touched.ng-valid){
+    //     border: 1px solid $light-black !important;
+    // }
+}

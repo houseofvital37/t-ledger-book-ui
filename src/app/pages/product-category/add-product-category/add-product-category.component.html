@@ -1,0 +1,80 @@
+<div
+  id="site-registration"
+  class="flex flex-column items-center bg-[--lightblue-bg-color]"
+>
+  <div class="flex flex-column gap-2.5 max-w-[830PX] w-full">
+    <div
+      class="card flex flex-row py-2 justify-between items-center sticky overflow-y-auto top-0 z-50 bg-transparent border-none"
+    >
+      <div class="flex items-center gap-2 text-lg font-semibold">
+        <button
+          (click)="back()"
+          class="p-2 border rounded flex bg-[#fff] hover:bg-[--primary-color] hover:text-white"
+        >
+          <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+        </button>
+        {{ productCategoryId ? "Edit" : "Add" }} Product Category
+      </div>
+      <button
+        *ngIf="!productCategoryId"
+         [nzLoading]="isLoading"
+         (click)="addProductCategory()"
+        nz-button
+        class="flex items-center bg-[--primary-color] text-white rounded h-[36px] py-2.5 px-3 gap-2.5"
+      >
+        <i nz-icon nzType="plus-circle"></i>
+        Add Product Category
+      </button>
+      <button
+        *ngIf="productCategoryId"
+        nz-button
+        [nzLoading]="isLoading"
+        (click)="updateProductCategory()"
+        class="flex items-center bg-[--primary-color] text-white rounded h-[36px] py-2.5 px-2.5"
+      >
+        <i nz-icon nzType="plus-circle"></i>
+        Submit
+      </button>
+    </div>
+    <div class="flex flex-column gap-4 max-w-[830px] overflow-y-auto h-[80vh]">
+      <!-- Basic Detail -->
+      <div class="card p-4 flex flex-column gap-3"  [formGroup]="basicDetail">
+        <div class="font-semibold text-md">Product Category Detail</div>
+        <div class="flex flex-wrap gap-4">
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Product Category</div>
+            <nz-input-group class="border rounded p-0 px-2">
+                <input required maxlength="100" formControlName="productCategory" class="input-field max-h-[36px]" placeholder="Enter Product Name">
+            </nz-input-group>                
+          </div>
+          <div class="inputWrap w-6/12 max-w-[48%]">
+            <div class="text-muted text-xs p-1">Status</div>
+            <nz-input-group class="border rounded p-0">
+              <nz-select
+                nzPlaceHolder="Select Product Category Status"
+                [nzDropdownClassName]="'option-width-100'"
+                [nzShowSearch]="true"
+                [nzAllowClear]="true"
+                [nzDropdownClassName]="'option-width-100'" 
+                class="max-h-[36px] w-100"
+                formControlName="status"
+              >
+              <nz-option
+                *ngFor="let status of [
+                  { label: 'Active', value: true },
+                  { label: 'Inactive', value: false }
+                ]"
+                [nzValue]="status.value"
+                [nzLabel]="status.label"
+              ></nz-option>
+              </nz-select>
+              </nz-input-group>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="false" class="w-full h-[100vh] top-0 left-0 text-center absolute z-[51] flex bg-[#f1f1f16b]">
+      <span nz-icon nzType="loading" class="m-auto text-[--blue-color] text-3xl"></span>
+  </div>
+  </div>
+</div>

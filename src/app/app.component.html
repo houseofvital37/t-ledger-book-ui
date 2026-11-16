@@ -1,0 +1,196 @@
+<div *ngIf="!isLoginPage()" class="flex flex-column h-screen bg-[--lightest-blue-color]">
+    <nz-header class="p-0 h-[68px] w-full bg-white min-w-[1400px] ant-layout-header">
+        <div class="h-100 flex flex-row px-4 shadow-md shadow-[--blue-color]">
+            <div [routerLink]="['/dashboard']" class="w-[280px] text-xl font-semibold flex flex-row gap-2 items-center cursor-pointer">
+                <img class="p-[6px] bg-gray rounded" src="assets/svgs/star.svg">
+                <span>VITAL</span>
+                <span class="text-[--primary-color]">LEDGER</span>
+            </div>
+            <div class="flex flex-row gap-2.5 justify-content-between w-full">
+                <!-- Order Tracking Input field -->
+                    <!-- <div class="inputWrap w-[290px] h-[36px] flex items-center bg-[--grey1-color] rounded-lg pr-3 mt-[20px]">
+                        <div class="w-[200px] bg-[--grey1-color] flex h-full rounded-lg">
+                            <nz-select (ngModelChange)="BrowsingPlaceholder($event)"  [(ngModel)]="browsingMode" nzPlaceHolder="Select" class="rounded-lg flex items-center " [nzShowArrow]="true">
+                                <nz-option nzLabel="Tracking #"   [nzValue]="1 "></nz-option>
+                                <nz-option nzLabel="Order Ref #"  [nzValue]="2" ></nz-option>
+                                <nz-option nzLabel="OMS Ref #"  [nzValue]="3" ></nz-option>
+                              </nz-select>
+                        </div>
+                        <input nz-input type="text" [(ngModel)]="SearchedData" (keyup.enter)="viewOrderDetail()" class="h-auto p-1 border-none" maxlength="100" nz-input [placeholder]="browsePlaceHolder" [nzBorderless]="true" />
+                        <div>
+                            <span
+                              nz-icon
+                              class="ant-input-clear-icon"
+                              nzTheme="fill"
+                              nzType="close-circle"
+                              *ngIf="SearchedData"
+                              (click)="SearchedData = null"
+                            ></span>
+                          </div>
+                          <div class="searchBtn pl-3" (click)="viewOrderDetail()">
+                            <span nz-icon nzType="search"></span>
+                          </div>
+                    </div> -->
+                <!-- Select Company Drop-Down  -->
+                <!-- <div class="inputWrap flex flex-row items-center w-1/5">
+                    <div class="input-group">
+                        <div class="text-muted label text-xs px-[5px]">Company</div>
+                        <nz-input-group class="border rounded p-0 flex">
+                            <nz-select (ngModelChange)="setSites($event)" [(ngModel)]="selectedCompany" zPlaceHolder="Select Company" required [nzDropdownClassName]="'option-width-100'" class="max-h-[36px] w-100 wrap">
+                                <nz-option *ngFor="let company of companies" [nzValue]="company?.companyId" [nzLabel]="company?.completeName"></nz-option>
+                            </nz-select>
+                        </nz-input-group>                
+                    </div>
+                </div> -->
+                <!-- links -->
+                <div class="flex items-center gap-4 text-md font-semibold">
+                    
+                    <!-- <span  class="cursor-pointer hover:text-[--primary-color]" (click)="routeToMenuPath(trackOrderMenu)" [ngClass]="{'text-[--primary-color]': router.url=='/order/order-details'}" >{{trackOrderMenu?.page}}</span> -->
+                    <span *ngFor="let menu of favoritesRoutes" class="cursor-pointer hover:text-[--primary-color]" [ngClass]="{'text-[--primary-color]': menu.path == router.url}" (click)="routeToMenuPath(menu)" >{{menu.page}}</span>
+                    <!-- <span class="cursor-pointer hover:text-[--primary-color]" [ngClass]="{'text-[--primary-color]': pageHeading == 'Shipping Partners'}" [routerLink]="['/shipping-partners']">Shipping Partners</span>
+                    <span class="cursor-pointer hover:text-[--primary-color]" [ngClass]="{'text-[--primary-color]': pageHeading == 'Heat Map'}" [routerLink]="['/heatmap']">Heat Map</span>
+                    <span class="cursor-pointer hover:text-[--primary-color]" [ngClass]="{'text-[--primary-color]': pageHeading == 'CRM'}" [routerLink]="['/CRM']">CRM</span> -->
+                </div>
+                <!-- profile menu -->
+                <div class="d-flex gap-2 items-center">
+                    <!-- <div nz-dropdown *ngIf="userTypeId==3 || modules?.length>1" [(nzVisible)]="isModuleDropdownVisible" [nzDropdownMenu]="moduleDropdown" nzTrigger="click" 
+                    [ngClass]="{'text-[--primary-color] rounded-full bg-[--grey1-color]':isModuleDropdownVisible}"  
+                    class="dropDownIcon pointer d-flex justify-content-center align-center hover:text-[--primary-color] hover:rounded-full px-[8px] py-1 hover:bg-[--grey1-color]"
+                    [ngClass]="{'borderActive': dropDownBorderStore2 === true}" >
+                        <i class="text-xl cursor-pointer" nz-icon nzType="appstore" nzTheme="fill"></i>
+                    </div> -->
+                    <!-- <i class="text-xl cursor-pointer hover:text-[--primary-color] hover:rounded-full px-[8px] py-1 hover:bg-[--grey1-color]" nz-dropdown nz-icon nzType="sound" nzTheme="fill"></i> -->
+                    <i  class="text-xl cursor-pointer hover:text-[--primary-color] hover:rounded-full px-[8px] py-1 hover:bg-[--grey1-color]" nz-dropdown routerLink="/settings/account" [ngClass]="{'text-[--primary-color] rounded-full bg-[--grey1-color]': pageHeading == 'Settings'}" nz-icon nzType="setting" nzTheme="fill"></i>
+                    <i class="text-xl cursor-pointer hover:text-[--primary-color] hover:rounded-full px-[8px] py-1 hover:bg-[--grey1-color]" nz-dropdown  (nzVisibleChange)="notificationMenuChange($event)"  [ngClass]="{'borderActive': dropDownBorder === true}" [nzDropdownMenu]="notification" nz-icon nzType="bell" nzTrigger="click" nzTheme="fill"></i>
+                    <div class="d-flex gap-2.5 items-center cursor-pointer" nz-dropdown [nzDropdownMenu]="profile" nzTrigger="click">
+                        <nz-avatar [nzSize]="35" class="d-flex items-center justify-center bg-[--primary-color]" nzIcon="user"></nz-avatar>
+                        <div class="flex flex-column leading-none">
+                            <span class="text-md font-semibold">{{loginUserFullName}}</span>
+                            <span class="muted text-xs">{{userType}}</span>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nz-header>
+
+    <nz-layout class="app-layout bg-[--lightest-blue-color] overflow-y-hidden">
+        <nz-sider class="menu-sidebar opacity-80 shadow-sm" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
+                  (mouseover)="!sideLock ? isCollapsed = false : ''" (mouseleave)="!sideLock ? isCollapsed = true : ''">
+            <div class="flex flex-column justify-between pt-2 h-screen overflow-y-hidden hover:overflow-auto">
+                <div>
+                    <ul class="bg-[--grey2-color]" nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+                        <li class="px-2 flex  "      [ngClass]="{'justify-content-end': !isCollapsed , 'justify-content-center' :  isCollapsed,'clicked-color': isClicked }">
+                            <span class="cursor-pointer text-md muted  hover:text-[--primary-color]"  [ngStyle]="{'color': isClicked ? 'gray' : '#0062FF'}" (click)="isClicked = !isClicked" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="sideLock = !sideLock;"> </span>
+                        </li>
+                        <!-- Side Bar Menu -->
+                        <ng-container *ngFor="let menu of navigationRoutes">
+                            <!-- Menu Without DropDown -->
+                            <ng-container>
+                                <li nz-menu-item (click)="routeToMenuPath(menu)"  class="gap-2 text-md font-semibold " [nzSelected]="menu.isSelected">
+                                    <i nz-icon [nzType]="menu.icon" nzTheme="outline" class="pr-2"></i>
+                                    <a [ngClass]="{'hidden' : isCollapsed}">{{menu.page}}</a>
+                                </li>
+                            </ng-container>
+                            <!-- Menu With DropDown -->
+                            <!-- <ng-container *ngIf="menu?.child?.length">
+                                <li  nz-submenu [nzTitle]="menu.page" [nzIcon]="menu.icon"
+                                    [(nzOpen)]="menu.isOpen" (nzOpenChange)="openHandler(menu?.page)" 
+                                    class="gap-2.5 text-md font-semibold">
+                                    <ul>
+                                        <div *ngFor="let submenu of menu?.child; let i= index">
+                                            <li  (click)="routeToSubmenuPath(submenu , menu?.path)"
+                                                nz-menu-item class="gap-2.5 text-xs font-semibold text-[12px]" [ngClass]="{ 'reloadMenuBind' : menu.path == router.url,'sideBarDesign':(submenu.path == router.url && !isCollapsed) || (submenu.path == '/'+router.url.split('/' , 2)[1] && router.url != '/order/airway-bill' && router.url != '/order/pickup-sheet' && router.url != '/report/payment/invoice-summary' && router.url != '/order/order-details') , 'sideBarDesignCollapsed': (submenu.path == router.url && isCollapsed)  }">
+                                                    <i nz-icon [nzType]="submenu.menuIcon" nzTheme="fill"></i>
+                                                    <a [ngClass]="{'hidden' : isCollapsed , 'reloadMenuBind' : !isCollapsed && (router.url == submenu?.actionCode) }">{{submenu.moduleName}}</a>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ng-container> -->
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </nz-sider>
+        <nz-layout class="bg-[--lightest-blue-color]">
+            <nz-content class="bg-[--lightest-blue-color]">
+                <div *ngIf="isLoading"  class="d-flex w-100 align-center justify-content-center mt-40">
+                    <ng-template #indicatorTemplate><span nz-icon nzType="loading" class="heading-24"></span></ng-template>
+                    <nz-spin nzSimple [nzIndicator]="indicatorTemplate" [nzSize]="'large'"></nz-spin>
+                </div>
+                <div id="main" class="p-2 mb-[16px] sm:h-[45vh] md:h-[75vh] lg:h-[91vh] xl:h-[91vh] 2xl:h-[91vh] overflow-y-hidden overflow-x-hidden">
+                    <router-outlet></router-outlet>
+                </div>   
+            </nz-content>
+        </nz-layout>
+    </nz-layout>
+</div>
+
+<router-outlet *ngIf="isLoginPage()"></router-outlet>
+
+
+<nz-dropdown-menu #profile="nzDropdownMenu">
+    <ul nz-menu class="min-w-[250px]">
+        <li nz-menu-item class="border-bottom w-100">
+            <div class="d-flex flex-column gap-2.5">
+                <div class="text-md font-semibold flex gap-2.5">
+                    <nz-avatar [nzSize]="35" class="d-flex items-center justify-center bg-[--primary-color]" nzIcon="user"></nz-avatar> 
+                    <div class="flex flex-column">
+                        {{loginUserFullName}}
+                        <div class="text-xs muted">{{loginUserEmail}}</div>
+            
+                    </div>
+                </div>
+                <div class="text-xs muted">Account ID: <span class="font-semibold">{{pmsId}}</span> <i nz-icon nzType="copy" nzTheme="fill" class="!pl-3 !w-fit" nz-tooltip nzTooltipTitle="Copy Account ID" (click)="copyToClipboard()" ></i></div>
+            </div>
+        </li>
+        <!-- <li routerLink="/settings/account" nz-menu-item class="w-100 gap-2.5 mt-3 font-semibold">
+            <i nz-icon nzType="setting" nzTheme="fill"></i>
+            Account Setting
+        </li> -->
+        <li  routerLink="/settings/account" nz-menu-item class="w-100 gap-2.5 mt-3 font-semibold">
+            <i nz-icon nzType="setting" nzTheme="fill"></i>
+            Account Setting
+        </li>
+        <li (click)="logout()" nz-menu-item class="w-100 gap-2.5 text-[--warn-color] font-semibold">
+            <span nz-icon nzType="poweroff" nzTheme="outline"></span>
+            Logout
+        </li>
+    </ul>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #notification="nzDropdownMenu">
+    <ul nz-menu> 
+        <li class="p-16-24 bb d-flex flex-column" style="min-width: 200px; width: 100%; max-width: 400px;" nz-menu-item>
+            <div  class="flex flex-column gap-4 w-100">
+                <div class="text-xs w-100 text-center px-5 my-3 muted">You have 0 notifications</div>    
+            </div>      
+        </li>
+
+    </ul>
+</nz-dropdown-menu>
+
+<!-- <nz-dropdown-menu  #moduleDropdown="nzDropdownMenu">
+    <ul nz-menu> 
+        <ng-container *ngFor="let module of modules;let index=index">
+            <li class="p-2 border-b d-flex flex-column min-w-[400px]"  nz-menu-item>
+                <div (click)="backToAdmin(module.detailUrl)" class="flex cursor-pointer gap-2.5 w-full p-2">
+                    <div class="min-w-[36px]" >
+                        <i [ngClass]="module?.class" class="text-lg rounded-full px-2 py-1" nz-icon [nzType]="module?.icon" [nzTheme]="'outline'"></i>
+                    </div>
+                    <div class="flex flex-column" >
+                        <div class="font-semibold text-md">{{module?.moduleName}}</div>
+                        <div class="text-xs muted">{{module?.highLevelDesc}}</div>
+                    </div>
+                </div>
+            </li>
+
+        </ng-container>
+        <li *ngIf="!modules?.length" class="p-2 border-b d-flex flex-column min-w-[400px]" style="min-width: 200px; width: 100%; max-width: 400px;" nz-menu-item>
+            <div  class="flex flex-column gap-4 w-100">
+                <div class="text-xs w-100 text-center px-5 my-3 muted">You don't have module to select</div>
+            </div>
+        </li>
+    </ul>
+</nz-dropdown-menu> -->

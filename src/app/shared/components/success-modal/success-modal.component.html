@@ -1,0 +1,15 @@
+<div class="mainWrap relative">
+  <div class="modalContent text-center py-[30px]">
+      <div class="icon">
+        <img width="40px" class="mx-auto" src="assets/svgs/check.svg">
+      </div>
+      
+      <div *ngIf="data?.title" class="heading font-bold text-md mt-4  max-w-[80%] mx-auto" [innerHTML]="data.title"> </div>
+      
+      <div *ngIf="data?.message" class="subheading font-normal text-xs mt-3.5  max-w-[80%] mx-auto" [innerHTML]="data.message"></div>
+      
+      <div class="login-btn-wrap mt-12  max-w-[80%] mx-auto" *ngIf="data?.buttonText">
+        <button *ngIf="data.buttonText" nz-button class="px-5 border-0 min-w-[150px] text-sm bg-primary text-white rounded-md py-2" (click)="navigateTo()"  >{{data.buttonText}}</button>
+      </div>
+    </div>
+</div>

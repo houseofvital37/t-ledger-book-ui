@@ -1,0 +1,53 @@
+nz-header{
+    .mainDiv{
+        box-shadow: 0px 100px 80px rgba(178, 183, 219, 0.05), 
+        0px 41.7776px 33.4221px rgba(178, 183, 219, 0.0359427), 
+        0px 22.3363px 17.869px rgba(178, 183, 219, 0.0298054), 
+        0px 12.5216px 10.0172px rgba(178, 183, 219, 0.025), 
+        0px 6.6501px 5.32008px rgba(178, 183, 219, 0.0201946), 
+        0px 2.76726px 2.21381px rgba(178, 183, 219, 0.0140573);
+    }
+
+}
+
+
+#main{
+    ::ng-deep ngx-intl-tel-input{
+        .iti{
+            width: 100%;
+        }
+        .form-control:focus{
+            box-shadow: none;
+        }
+    }
+    // background-image:url("../assets/svgs/vector1.svg");
+    button{
+        height: 36px;
+    }
+
+}
+.input-group{
+    position: relative;
+    .label{
+        position: absolute;
+        display: block;
+        top: -10px; 
+        left: 10px;
+        z-index: 50;
+        background-color: white;
+    }
+}
+
+.sideBarDesign{
+    background-color: #e6e5ff !important; border-radius: 4px !important;
+  }
+  
+  .sideBarDesignCollapsed{
+    background-color: #e6e5ff !important; border-radius: 4px !important;
+  }
+  .ant-menu-item:active{
+    background-color: transparent;
+  }
+  .reloadMenuBind{
+    color: var(--primary-color) !important;
+  }

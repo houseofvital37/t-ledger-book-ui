@@ -1,0 +1,115 @@
+<button [matMenuTriggerFor]="actionMenu" class="flex items-center border-1 hover:bg-[--primary-color] hover:text-white rounded-[6px] py-2.5 px-3 h-[36px]  gap-2.5" [ngClass]="{'bg-[--primary-color] text-white': chips.length}">
+    <i nz-icon nzType="filter" nzTheme="outline"></i>
+    <span>Filters</span>
+    <!-- <div class="count h-[15px] w-[15px] flex justify-center items-center " *ngIf="chips.length">
+        {{chips.length}}</div> -->
+</button>
+
+<mat-menu class="filter-menu" #actionMenu="matMenu" >
+    <div  (click) = "$event.stopPropagation()" class="mainWrap" >
+        <div (click) = "$event.stopPropagation()" class="action-heading">Filters</div>
+        <div id="filter-content" fxLayout="column" (click) = "$event.stopPropagation()">
+            <ng-container *ngFor="let field_ of filters">
+                <ng-container>
+                    <ng-container *ngIf=" field_.type === 'text' ">
+                        <ng-container *ngTemplateOutlet="textField; context: {field:field_}"></ng-container>
+                    </ng-container>
+    
+                    <ng-container *ngIf=" field_.type === 'date' ">
+                        <ng-container *ngTemplateOutlet="dateField; context: {field:field_}"></ng-container>
+                    </ng-container>
+                    
+                    <ng-container *ngIf=" field_.type === 'select' ">
+                        <ng-container [ngSwitch]="field_.variable">
+                            <!-- <ng-container *ngSwitchCase="'cityName'">
+                                <ng-container *ngTemplateOutlet="selectField; context: {field:field_, options:operationalCityList}"></ng-container>
+                            </ng-container> -->
+                            <ng-container *ngSwitchDefault>
+                                <ng-container *ngTemplateOutlet="selectField; context: {field:field_}"></ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+    
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="pt-3 border-top flex justify-between mx-2.5 items-center" > 
+            <button nz-button class="flex justify-center items-center border bg-[#FFF] hover:bg-[--primary-color] hover:text-white rounded-[6px] py-2.5 px-3 h-[36px] min-w-[80px] gap-2.5" (click)="clear()" >Clear</button>
+            <button nz-button class="flex justify-center items-center border bg-[--primary-color] text-white rounded-[6px] py-2.5 px-3 h-[36px] min-w-[80px] gap-2.5" [disabled]="!isValid()" (click)="onSubmit()">Apply</button>
+        </div>
+    </div>
+</mat-menu>
+
+
+<ng-template #textField let-field="field">
+    <form  nz-form  class="p-2 flex items-center justify-center w-full gap-[10px]" >
+        <label  nz-checkbox class="max-w-[35%] w-full" (nzCheckedChange)="checkUpdated(field)" name="{{field.variable}}-check" [(ngModel)]="field.check">{{field.label}}</label>
+        <nz-form-item  fxFlex="auto" class="m-0 w-100 !border:none">
+            <!-- <nz-form-label [nzNoColon]="true" nzFor="{{field.variable}}-id">{{field.label}} &nbsp;</nz-form-label> -->
+            <div class="inputBorderWrap">
+                <nz-form-control [ngClass]="{'check border-radius-5 bg-white':field.check}" nzErrorTip="">
+                    <input  [ngClass]="{'bg-white': field.check}" nz-input name="{{field.variable}}-name" id="{{field.variable}}-id" [(ngModel)]="field.value" [required]="field.check" [disabled]="!field.check" class="" [placeholder]="field.placeholder" />
+                </nz-form-control>
+            </div>
+        </nz-form-item>    
+    </form>
+</ng-template>
+
+
+<ng-template #dateField let-field="field">      
+    <form  nz-form   class="p-2 flex items-center justify-center w-full gap-[10px]" >
+        <label nz-checkbox class="max-w-[35%] w-full" (nzCheckedChange)="checkUpdated(field)" name="{{field.variable}}-check" [(ngModel)]="field.check">{{field.label}}</label>
+        <nz-form-item  fxFlex="auto" class="m-0 w-100 !border:none">
+            <nz-form-control [ngClass]="{'!border:none bg-white':field.check}" nzErrorTip="">
+                <nz-range-picker [ngClass]="{'bg-white': field.check}" [nzDisabledDate]="disabledDate" nzSecondStep nzSeparator="-"  name="{{field.variable}}-name" id="{{field.variable}}-id" [(ngModel)]="field.value" [required]="field.check" [disabled]="!field.check" (ngModelChange)="onDateChange($event, field)"></nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>    
+    </form>
+</ng-template>
+<!-- <nz-form-label [nzNoColon]="true" nzFor="{{field.variable}}-id">{{field.label}} &nbsp;</nz-form-label> -->
+
+<ng-template #selectField let-field="field">
+    <div class="p-2 flex items-center justify-center w-full gap-[10px]">
+        <label  nz-checkbox class="max-w-[35%] w-full" (nzCheckedChange)="checkUpdated(field)"  name="{{field.variable}}-check" [(ngModel)]="field.check">{{field.label}}</label>
+        <nz-input-group class="border rounded p-0 bg-[#F0F0F0] w-100" [ngClass]="{'noBorder':!field.check}">
+            <nz-select class="border-0 rounded w-full" [ngClass]="{'border rounded': !field.check}" (ngModelChange)="optionClick(field.variable,$event)"  nzShowSearch="true"                 [nzShowSearch]="true"
+            [nzAutoClearSearchValue]="true"
+            [nzAllowClear]="true"
+            [nzDropdownClassName]="'option-width-100'"
+            [nzPlaceHolder]="field.placeholder" name="{{field.variable}}-name" id="{{field.variable}}-id" [(ngModel)]="field.value" [required]="field.check" [disabled]="!field.check" [ngClass]="{'bg-white': field.check}" [nzBorderless]="true" [nzSize]="'default'">
+            <nz-option *ngFor="let option of field.options" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        </nz-select>
+    </nz-input-group>
+</div>
+</ng-template>
+
+<!-- <div *ngIf="!showFilters && chips?.length" class="rounded-md d-flex flex-wrap chipWrap">
+    <ng-container *ngFor="let chip of chips">
+        <nz-tag class="m-1 rounded-md px-2 py-1 flex items-center">
+            <b>{{chip.label}}</b>: &nbsp;
+            <span [innerHtml]="chip.value"></span>
+            <span (click)="onChipCancel(chip.label)" class="cursor-pointer text-[--warn-color]" nz-icon nzType="delete" nzTheme="outline"></span>
+        </nz-tag>
+    </ng-container>
+</div> -->
+<!-- <div fxFlex="auto" fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap="10px 10px">
+    <ng-container *ngFor="let chip of chips">
+        <nz-tag class="m-1" nzMode="closeable" (nzOnClose)="onChipCancel($event,chip.label)">
+            <b appStoreBranch >{{chip.label}}</b>: &nbsp;
+            <span [innerHtml]="chip.value"></span>
+        </nz-tag>
+    </ng-container>
+</div> -->
+
+<!-- <ng-template #selectField let-field="field">
+    <form  nz-form   class="p-2 flex items-center justify-center w-full gap-[10px]">
+        <label  nz-checkbox class="max-w-[35%] w-full" (nzCheckedChange)="checkUpdated(field)"  name="{{field.variable}}-check" [(ngModel)]="field.check">{{field.label}}</label>
+        <nz-form-item  fxFlex="auto" class="m-0 w-100 !border:none">
+            <nz-form-control [ngClass]="{'!border:none bg-white':field.check}" nzErrorTip="">
+                <nz-select (ngModelChange)="optionClick(field.variable,$event)"  nzShowSearch="true" [nzPlaceHolder]="field.placeholder" name="{{field.variable}}-name" id="{{field.variable}}-id" [(ngModel)]="field.value" [required]="field.check" [disabled]="!field.check" [ngClass]="{'bg-white': field.check}" [nzBorderless]="true" [nzSize]="'default'">
+                    <nz-option *ngFor="let option of field.options" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>    
+    </form>
+</ng-template> -->
